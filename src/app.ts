@@ -11,8 +11,9 @@ import {
 class App {
   topSection: HTMLElement;
   listSection: HTMLElement;
-  mainId: HTMLElement;
+  mainSection: HTMLElement;
   detail: HTMLElement;
+  detailList: HTMLElement;
   detailItem: DetailItem;
   top: Top;
   search: Search;
@@ -25,9 +26,10 @@ class App {
 
   constructor() {
     this.listSection = document.querySelector("#listSection") as HTMLElement;
-    this.mainId = document.querySelector("#main")! as HTMLElement;
+    this.mainSection = document.querySelector("#main")! as HTMLElement;
     this.detail = document.querySelector("#detail")! as HTMLElement;
     this.topSection = document.querySelector("#top")! as HTMLElement;
+    this.detailList = document.querySelector("#detailList")! as HTMLElement;
     this.detailItem = new DetailItem();
     this.list = new List();
     this.top = new Top();
@@ -47,7 +49,7 @@ class App {
   async getAllCountires() {
     const result = await getAxios("https://restcountries.eu/rest/v2/all");
     /*Main*/
-    this.mainId.innerHTML = this.list.makeList(result);
+    this.mainSection.innerHTML = this.list.makeList(result);
   }
   async getCountryInfo(name: string | null) {
     const result = await getAxios(
@@ -56,55 +58,30 @@ class App {
     const html = await this.detailItem.makeDetailItem(result);
     this.listSection.setAttribute("style", "display:none");
     this.detail.setAttribute("style", "display:block");
-    this.detail.innerHTML = html;
-    const backBtn = document.querySelector("#backBtn")! as HTMLElement;
-    backBtn.addEventListener("click", () => {
-      this.listSection.setAttribute("style", "display:block");
-      this.detail.setAttribute("style", "display:none");
-      backBtn.removeEventListener("click", () => {});
-    });
-  }
-
-  setEvent() {
-    this.mainId.addEventListener("click", (event) => {
-      event.preventDefault();
-      const target: HTMLElement = event.target! as HTMLElement;
-      const parentNode: HTMLElement = target.parentNode! as HTMLElement;
-      const id = parentNode.getAttribute("id")! as string;
-      if (!id || id in this.exceptIdList) {
-        return;
-      }
-      const name = parentNode.getAttribute("id");
-      this.getCountryInfo(name);
-    });
-    this.detail.addEventListener("click", (event) => {
-      event.preventDefault();
-      const target: HTMLElement = event.target! as HTMLElement;
-      const id = target.getAttribute("id")! as string;
-      if (!id || id in this.exceptIdList) {
-        return;
-      }
-      const name = target.getAttribute("id");
-      this.getCountryInfo(name);
-    });
+    this.detailList.innerHTML = html;
   }
 }
 
 const app = new App();
 app.init();
-app.setEvent();
-const selectBox = document.querySelector("#selectBox")! as HTMLElement;
-const search = document.querySelector("#search")! as HTMLInputElement;
-var timer: any;
+
 window.onload = () => {
+  var timer: any;
+  const selectBox = document.querySelector("#selectBox")! as HTMLElement;
+  const search = document.querySelector("#search")! as HTMLInputElement;
+  const backBtn = document.querySelector("#backBtn")! as HTMLElement;
   selectBox.addEventListener("change", (event) => {
     const target = document.querySelector(
       "#selectBox>option:checked"
     )! as HTMLElement;
     const regionName = target.getAttribute("value")! as string;
     getCountryByRegion(regionName).then((resolve) => {
-      app.mainId.innerHTML = app.list.makeList(resolve);
+      app.mainSection.innerHTML = app.list.makeList(resolve);
     });
+  });
+  backBtn.addEventListener("click", () => {
+    app.listSection.setAttribute("style", "display:block");
+    app.detail.setAttribute("style", "display:none");
   });
   search.addEventListener("input", function (e) {
     if (timer) {
@@ -114,11 +91,32 @@ window.onload = () => {
       const name = search.value! as string;
       if (name) {
         getCountryInfoBySearch(name).then((resovle) => {
-          app.mainId.innerHTML = app.list.makeList(resovle);
+          app.mainSection.innerHTML = app.list.makeList(resovle);
         });
       } else {
         app.getAllCountires();
       }
     }, 700);
+  });
+  app.mainSection.addEventListener("click", (event) => {
+    event.preventDefault();
+    const target: HTMLElement = event.target! as HTMLElement;
+    const parentNode: HTMLElement = target.parentNode! as HTMLElement;
+    const id = parentNode.getAttribute("id")! as string;
+    if (!id || id in app.exceptIdList) {
+      return;
+    }
+    const name = parentNode.getAttribute("id");
+    app.getCountryInfo(name);
+  });
+  app.detail.addEventListener("click", (event) => {
+    event.preventDefault();
+    const target: HTMLElement = event.target! as HTMLElement;
+    const id = target.getAttribute("id")! as string;
+    if (!id || id in app.exceptIdList) {
+      return;
+    }
+    const name = target.getAttribute("id");
+    app.getCountryInfo(name);
   });
 };

@@ -23,16 +23,11 @@ type DetailCountryInfo = {
 
 class DetailItem {
   async makeDetailItem(result: Array<DetailCountryInfo>) {
-    let html = this.makeBackBtn();
+    let html = "";
     html += this.makeCountryImg(result[0]);
     html += this.makeCountryInfo(result[0]);
     html += await this.makeBorderCountries(result[0]);
     return html;
-  }
-  private makeBackBtn() {
-    return `<div>
-        <button id ="backBtn"><- Back</button>
-      </div>`;
   }
   private makeCountryImg(result: DetailCountryInfo) {
     return `<div>
