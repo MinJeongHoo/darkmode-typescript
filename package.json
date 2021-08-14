@@ -1,0 +1,42 @@
+{
+  "name": "darkmode-typescript",
+  "version": "1.0.0",
+  "description": "# Class란?? - 객체 지향 프로그래밍(OOP)에서 특정 객체를 생성하기 위해 변수와 메소드를 정의하는 일종의 틀이다.  - 우리는 이 틀을 이용해서 객체를 생성할 수 있다. - ex) Creature라는 부모클래스 안에는 Person이 생성 될 수 있고, Animal도 생성될 수 있고, Plant도 생성될 수 있다.",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MinJeongHoo/darkmode-typescript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MinJeongHoo/darkmode-typescript/issues"
+  },
+  "homepage": "https://github.com/MinJeongHoo/darkmode-typescript#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.14.8",
+    "@types/axios": "^0.14.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/node": "^16.4.13",
+    "babel-loader": "^8.2.2",
+    "core-js": "^2.6.12",
+    "html-webpack-plugin": "^5.3.2",
+    "parcel-bundler": "^1.12.5",
+    "ts-loader": "^9.2.5",
+    "webpack": "^5.50.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
